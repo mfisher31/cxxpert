@@ -1,11 +1,14 @@
+
+#include <format>
 #include <iostream>
 
-consteval int square(int n) {
+consteval int square (int n) {
     return n * n;
 }
 
+constinit int sq7 { square (3) };
+
 int main() {
-    constexpr int result = square(7);
-    std::cout << result << '\n';
+    std::cout << std::format ("the square of seven is {}\n", sq7);
     return 0;
 }

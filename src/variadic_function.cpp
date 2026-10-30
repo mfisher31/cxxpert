@@ -11,7 +11,6 @@
 // part so you can test incrementally.
 // ============================================================================
 
-
 // ----------------------------------------------------------------------------
 // PART 1 — The basic syntax: a template parameter pack
 // ----------------------------------------------------------------------------
@@ -29,16 +28,15 @@
 //   `sizeof...(Ts)` operator (note: sizeof... is a single operator, distinct
 //   from sizeof). It should work for 0, 1, or many arguments of any type.
 //
-template<typename... Ts>
+template <typename... Ts>
 constexpr size_t count_args (Ts... args) {
-    return sizeof... (args);
+    return sizeof...(args);
 }
 
 // TEST (uncomment once written):
-  static_assert(count_args() == 0);
-  static_assert(count_args(1, 2, 3) == 3);
-  static_assert(count_args("a", 2, 3.0, 'x') == 4);
-
+static_assert (count_args() == 0);
+static_assert (count_args (1, 2, 3) == 3);
+static_assert (count_args ("a", 2, 3.0, 'x') == 4);
 
 // ----------------------------------------------------------------------------
 // PART 2 — Expanding a pack recursively
@@ -97,16 +95,16 @@ constexpr size_t count_args (Ts... args) {
 
 void print_all() {}
 
-template<typename First, typename... Args>
+template <typename First, typename... Args>
 void print_all (First current, Args... args) {
     std::cout << current << " ";
-    print_all(args...);
+    print_all (args...);
 }
 
 void part_2() {
-  // TEST:
-  print_all(1, "two", 3.0, 'f');   // expect: 1 two 3 f
-  std::cout << std::endl;
+    // TEST:
+    print_all (1, "two", 3.0, 'f'); // expect: 1 two 3 f
+    std::cout << std::endl;
 }
 
 // ----------------------------------------------------------------------------
@@ -132,14 +130,14 @@ void part_2() {
 //   fold expands into "print(args1), print(args2), print(args3), ...".
 //
 
-template<typename T>
+template <typename T>
 void print (T val) {
     std::cout << val << " ";
 }
 
-template<typename ...Args>
-void print_all_folded(Args... args) {
-    (print(args), ...);
+template <typename... Args>
+void print_all_folded (Args... args) {
+    (print (args), ...);
 }
 
 void part_3_1() {
@@ -152,15 +150,14 @@ void part_3_1() {
 //   argument is truthy, using `(args && ...)`.
 //
 
-template<typename ...Args>
-constexpr bool all_true(Args... args) {
+template <typename... Args>
+constexpr bool all_true (Args... args) {
     return (args && ...);
 }
 
 // TEST:
-  static_assert(all_true(true, 1, 2.5));
-  static_assert(!all_true(true, 0, 2.5));
-
+static_assert (all_true (true, 1, 2.5));
+static_assert (! all_true (true, 0, 2.5));
 
 // ----------------------------------------------------------------------------
 // PART 4 — Perfect forwarding with a parameter pack
@@ -206,9 +203,9 @@ struct Logger {
     };
 };
 
-template<typename... Args>
-void make_logger_and_log(Args&&... args) {
-    Logger ( std::forward<Args> (args)... );
+template <typename... Args>
+void make_logger_and_log (Args&&... args) {
+    Logger (std::forward<Args> (args)...);
 }
 
 // ----------------------------------------------------------------------------
@@ -231,8 +228,10 @@ void part_5() {
         return sizeof...(args);
     };
 
-    struct Six { int val {0}; };
-    std::cout << "lambda arg count is " << doit (1, 2, 3, 4, "five", Six{}) << std::endl;
+    struct Six {
+        int val { 0 };
+    };
+    std::cout << "lambda arg count is " << doit (1, 2, 3, 4, "five", Six {}) << std::endl;
 }
 
 // ----------------------------------------------------------------------------
@@ -255,23 +254,20 @@ void part_5() {
 //   about the constraint, not some obscure deep template-instantiation
 //   error. That's the whole point of constraining packs with concepts.
 //
-template<typename ...Args>
-    requires (std::is_integral_v<Args> && ...)
-constexpr int sum_integral (Args... args) {
+template <typename... Args>
+requires (std::is_integral_v<Args>&&...) constexpr int sum_integral (Args... args) {
     const auto sum = (args + ...);
     return static_cast<int> (sum);
 }
 
 // TEST:
-  static_assert(sum_integral(1, 2, 3) == 6);
+static_assert (sum_integral (1, 2, 3) == 6);
 //   sum_integral(1, 2.0, 3); // should fail to compile — try it and read why
-
 
 // ----------------------------------------------------------------------------
 // main — uncomment calls as you complete each part
 // ----------------------------------------------------------------------------
 int main() {
-    
     part_2();
 
     part_3_1();
@@ -285,7 +281,8 @@ int main() {
     part_5();
 
     // PART 6
-    std::cout << "sum=" << sum_integral (1, 2, 3, 4) << std::endl;;
+    std::cout << "sum=" << sum_integral (1, 2, 3, 4) << std::endl;
+    ;
 
     return 0;
 }

@@ -1,6 +1,6 @@
-#include <variant>
-#include <string>
 #include <iostream>
+#include <string>
+#include <variant>
 
 // ============================================================================
 // std::variant — guided exercises
@@ -9,7 +9,6 @@
 // precisely, then gives you a task. Nothing is implemented for you — write
 // the code yourself, wire calls into main(), and test as you go.
 // ============================================================================
-
 
 // ----------------------------------------------------------------------------
 // PART 1 — What a variant actually is, and what "active alternative" means
@@ -48,16 +47,16 @@
 //   reassign — nothing about *extracting* the value yet, that's PART 2.
 void part_1() {
     using namespace std::string_literals;
-    
+
     std::variant<int, double, std::string> v;
     std::cout << v.index() << std::endl;
     v = 100.5;
     std::cout << v.index() << std::endl;
     v = "helloworld"s;
 
-    std::cout << std::boolalpha << "double=" << std::holds_alternative<double>(v)
-        << " " << "string=" << std::holds_alternative<std::string>(v)
-        << std::endl;
+    std::cout << std::boolalpha << "double=" << std::holds_alternative<double> (v)
+              << " " << "string=" << std::holds_alternative<std::string> (v)
+              << std::endl;
 }
 
 // ----------------------------------------------------------------------------
@@ -95,7 +94,7 @@ void part_1() {
 //   get() exception path.
 
 void describe (const std::variant<int, double, std::string>& v) {
-    if (auto res = std::get_if<std::string>(&v)) {
+    if (auto res = std::get_if<std::string> (&v)) {
         std::cout << "string len = " << res->length() << std::endl;
     } else {
         try {
@@ -109,9 +108,9 @@ void describe (const std::variant<int, double, std::string>& v) {
 void part_2() {
     std::variant<int, double, std::string> v;
     v = 10;
-    describe(v);
+    describe (v);
     v = 100.3;
-    describe(v);
+    describe (v);
     v = std::string ("hello world, this is a variant string");
     describe (v);
 }
@@ -171,21 +170,21 @@ void part_2() {
 //      lambda fires each time based purely on the variant's active type —
 //      no index checks, no get/get_if anywhere in this part.
 
-template<typename... Ts>
+template <typename... Ts>
 struct Overloaded : Ts... {
     using Ts::operator()...;
 };
 
 void part_3() {
-    auto intf = [](int val) { std::cout << "intval=" << val << std::endl; };
-    auto dblf = [](double val) { std::cout << "dblval=" << val << std::endl; };
-    auto strf = [](std::string val) { std::cout << "strval=" << val << std::endl; };
-    Overloaded<decltype(intf), decltype(dblf), decltype(strf)> handler;
+    auto intf = [] (int val) { std::cout << "intval=" << val << std::endl; };
+    auto dblf = [] (double val) { std::cout << "dblval=" << val << std::endl; };
+    auto strf = [] (std::string val) { std::cout << "strval=" << val << std::endl; };
+    Overloaded<decltype (intf), decltype (dblf), decltype (strf)> handler;
     std::variant<int, double, std::string> v;
     v = 100;
-    std::visit(handler, v);
+    std::visit (handler, v);
     v = 101.33;
-    std::visit(handler, v);
+    std::visit (handler, v);
     v = "one hundered and four";
     std::visit (handler, v);
 }
@@ -213,7 +212,6 @@ void part_3() {
 //   PART 3's machinery — add a lambda overload for std::monostate), prints
 //   "empty" for the monostate case and something type-specific otherwise.
 
-
 // ----------------------------------------------------------------------------
 // PART 5 — C++20: variant operations are constexpr
 // ----------------------------------------------------------------------------
@@ -234,7 +232,6 @@ void part_3() {
 //   the whole get-the-active-value-out pipeline runs entirely at compile
 //   time. This is only possible because int/double are literal types —
 //   note you cannot do this exercise with std::string in the mix.
-
 
 // ----------------------------------------------------------------------------
 // PART 6 — In-place construction: emplace, in_place_type, in_place_index
@@ -263,7 +260,6 @@ void part_3() {
 //   straight through without ever forming a temporary std::string. Then
 //   call v3.emplace<int>(...) to switch it to the int alternative in place,
 //   and confirm v3.index() reflects the change.
-
 
 // ----------------------------------------------------------------------------
 // main — uncomment/call as you complete each part

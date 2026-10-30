@@ -1,7 +1,7 @@
 #include <atomic>
-#include <thread>
 #include <chrono>
 #include <iostream>
+#include <thread>
 #include <vector>
 
 // ============================================================================
@@ -13,7 +13,6 @@
 // semaphore.cpp — this file assumes you remember that and focuses on the
 // atomic-specific operations, especially compare_exchange.
 // ============================================================================
-
 
 // ----------------------------------------------------------------------------
 // PART 1 — What std::atomic<T> actually guarantees
@@ -46,7 +45,6 @@
 //   value come out wrong/inconsistent across runs — that's the data race
 //   std::atomic exists to prevent.
 
-
 // ----------------------------------------------------------------------------
 // PART 2 — exchange(): atomic "set new value, give me back the old one"
 // ----------------------------------------------------------------------------
@@ -76,7 +74,6 @@
 //   checks) until it returns true, then print "saw it" and break. This
 //   proves exchange() is doing a real read of the previous value, not just
 //   blindly writing false every time.
-
 
 // ----------------------------------------------------------------------------
 // PART 3 — compare_exchange: the real CAS primitive, and its gotchas
@@ -140,7 +137,6 @@
 // TEST: spin up several threads all calling increment_if_below(counter, 100)
 // in a loop as fast as they can; confirm counter never exceeds 100 no
 // matter how many threads race on it.
-
 
 // ----------------------------------------------------------------------------
 // PART 4 — Capstone: realtime-thread-to-UI-thread signaling with CAS
@@ -211,7 +207,6 @@
 //      see if you can get totalClaims to occasionally double-count a
 //      single signal when both consumer threads are spinning aggressively
 //      (tight loop, no sleep) — this is the race CAS exists to close.
-
 
 // ----------------------------------------------------------------------------
 // main — uncomment/call as you complete each part

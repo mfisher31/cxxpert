@@ -1,7 +1,7 @@
 #include <chrono>
-#include <thread>
-#include <semaphore>
 #include <iostream>
+#include <semaphore>
+#include <thread>
 
 constexpr int num = 100;
 std::counting_semaphore<20> _sem { 0 };
@@ -18,7 +18,7 @@ static void worker() {
 
 int main() {
     std::thread work_thread (worker);
-    
+
     for (int i = 0; i < num; ++i) {
         _sem.release (1);
     }

@@ -18,7 +18,7 @@ int main() {
     Point p2 { 1, 2, 3 };
     std::cout << p2.x << ":" << p2.y << ":" << p2.z << std::endl;
 
-    Point p3 { .x = 1, .y=100, .z = 3 };
+    Point p3 { .x = 1, .y = 100, .z = 3 };
     std::cout << p3.y << std::endl;
     return 0;
 }
