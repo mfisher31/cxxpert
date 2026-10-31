@@ -73,11 +73,50 @@ Floating-point rounding is exact on the binary value: `{:.1f}` of `2.25` prints 
 
 ## 1.3 Dynamic width and precision
 
-Use a nested `{}` for the width or precision. It consumes an argument, which must be an integer, and it comes **before** the value it applies to.
+A width or precision doesn't have to be written into the format string. Put a nested `{}` where the number would go, and pass the number as an argument. This is how you set a column width from a variable at runtime.
+
+The two calls below do the same thing. The first fixes the width at 6, the second reads it from an argument:
 
 ```cpp
-std::format("[{:{}}]", "w", 6);        // "[w     ]"
-std::format("[{:.{}f}]", 3.14159, 1);  // "[3.1]"
+std::format("[{:6}]", "w");     // "[w     ]"
+std::format("[{:{}}]", "w", 6); // "[w     ]"
+```
+
+**The square brackets are not part of the syntax.** `[` and `]` are ordinary text that gets copied to the output. They're here only to make the padding visible, because trailing spaces are otherwise hard to see. Without them the result is the same, just harder to read:
+
+```cpp
+std::format("{:{}}|", "w", 6);  // "w     |"  (the | marks where the padding ends)
+```
+
+Reading `"[{:{}}]"` piece by piece:
+
+| Piece | Meaning |
+|---|---|
+| `[` | literal text |
+| `{` ... `}` (outer) | placeholder for the value, takes the first argument, `"w"` |
+| `:` | start of the spec |
+| `{}` (inner) | the width, takes the next argument, `6` |
+| `]` | literal text |
+
+**Argument order.** The value comes first and the width or precision comes **after** it, because the outer placeholder opens first and arguments are taken left to right:
+
+```cpp
+std::format("[{:{}}]", "w", 6);            // "[w     ]"   value, width
+std::format("[{:.{}f}]", 3.14159, 1);      // "[3.1]"      value, precision
+std::format("[{:{}.{}f}]", 3.14159, 8, 2); // "[    3.14]" value, width, precision
+std::format("[{:{}}] [{:{}}]", "a", 3, "b", 5); // "[a  ] [b    ]"
+```
+
+Numbered placeholders let you choose any order:
+
+```cpp
+std::format("[{1:{0}}]", 6, "w");  // "[w     ]"
+```
+
+The nested argument must be an integer. Swapping the order in `std::format("[{:{}}]", 6, "w")` tries to use `"w"` as the width, which is a compile error when the format string is a literal. With `std::vformat` it throws `std::format_error` at runtime instead. With libc++ the message in both cases is:
+
+```
+Replacement argument isn't a standard signed or unsigned integer type
 ```
 
 ## 1.4 The functions
