@@ -53,8 +53,9 @@ void exercise_2_b() {
         //     return std::tie(lname, fname, age)
         //         < std::tie(o.lname, o.fname, o.age);
         // }
-
-        auto operator<= > (const Person&) const = default;
+        // clang-format off
+        auto operator<=> (const Person&) const = default;
+        // clang-format on
     };
 
     Person me { "Michael", "Fisher", 44 };
