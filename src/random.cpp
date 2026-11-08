@@ -1,5 +1,5 @@
 #include <array>
-#include <cassert>
+#include <format>
 #include <iostream>
 #include <ostream>
 #include <random>

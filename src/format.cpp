@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iterator>
 #include <string>
+#include <vector>
 
 struct LineItem {
     std::string name;
