@@ -19,7 +19,7 @@ int main() {
     std::random_device rd;
     std::mt19937 gen { rd() };
     gen = std::mt19937 { rd() };
-    
+
     std::uniform_int_distribution<int> rand { 0, 255 };
 
     ItemQueue queue { by_priority };
